@@ -1,5 +1,6 @@
 ﻿using BowlingLeagueWebApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,11 @@ namespace BowlingLeagueWebApp.Controllers
 
         public IActionResult Index()
         {
-            var allBowlersList = _context.bowlers.ToList();
+            var allBowlersList = _context.bowlers
+                .Include(x => x.Team)
+                .OrderBy(x => x.Team.TeamName)
+                .ThenBy(x => x.BowlerLastName)
+                .ToList();
             return View(allBowlersList);
         }
         
@@ -31,7 +36,7 @@ namespace BowlingLeagueWebApp.Controllers
         [HttpGet]
         public IActionResult AddBowler()
         {
-            ViewBag.teams = _context.teams.ToList();
+            ViewBag.teams = _context.teams.OrderBy(x => x.TeamName).ToList();
 
             return View();
         }
@@ -49,7 +54,7 @@ namespace BowlingLeagueWebApp.Controllers
             }
             else
             {
-                ViewBag.teams = _context.teams.ToList();
+                ViewBag.teams = _context.teams.OrderBy(x => x.TeamName).ToList();
 
                 return View(b);
             }
@@ -62,17 +67,22 @@ namespace BowlingLeagueWebApp.Controllers
 
 
         [HttpGet]
-        public IActionResult Edit(int bID)
+        public IActionResult Edit(int BowlerID)
         {
-            ViewBag.Teams = _context.teams.ToList();
-            var bowler = _context.bowlers.Single(x => x.BowlerID == bID);
+            ViewBag.Teams = _context.teams
+                .OrderBy(x => x.TeamName)
+                .ToList();
+            var bowler = _context.bowlers.Single(x => x.BowlerID == BowlerID);
             
-            return View(bowler);
+            return View("AddBowler", bowler);
         }
 
         [HttpPost]
-        public IActionResult Edit()
+        public IActionResult Edit(Bowler bowler)
         {
+            _context.Update(bowler);
+            _context.SaveChanges();
+
             return RedirectToAction("Index");
         }
 
@@ -80,9 +90,11 @@ namespace BowlingLeagueWebApp.Controllers
 
 
         [HttpGet]
-        public IActionResult Delete()
+        public IActionResult Delete(int BowlerID)
         {
-            return View("Confirmation");
+            var bowler = _context.bowlers.Single(x => x.BowlerID == BowlerID);
+
+            return View("Confirmation", bowler);
         }
 
         [HttpPost]

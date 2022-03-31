@@ -11,7 +11,7 @@
 </div>
 
 
-<table class="table table-bordered">
+<table class="table table-striped table-bordered">
 
     <thead class="font-weight-bold">
         <tr>
@@ -21,7 +21,6 @@
             <td>State</td>
             <td>Zip</td>
             <td>Phone Number</td>
-            <td>Team ID</td>
             <td>Team Name</td>
         </tr>
     </thead>
@@ -30,18 +29,17 @@
         @foreach (var bowler in Model)   // use this to iterate through each of the instances in teh model(aka database)
         {
             <tr>
-                <td>@bowler.BowlerFirstName @bowler.BowlerMiddleInit @bowler.BowlerLastName</td>
+                <td>@bowler.BowlerLastName, @bowler.BowlerFirstName @bowler.BowlerMiddleInit</td>
                 <td>@bowler.BowlerAddress</td>
                 <td>@bowler.BowlerCity</td>
                 <td>@bowler.BowlerState</td>
                 <td>@bowler.BowlerZip</td>
                 <td>@bowler.BowlerPhoneNumber</td>
-                <td>@bowler.TeamID</td>
-                @*<td>@bowler.Team.TeamName</td>*@
-                <td>Team name here</td>
+                <td>@bowler.Team.TeamName</td>
+                @*<td>Team name here</td>*@
 
-                <td><a asp-controller="Home" asp-action="Edit" asp-route-MovieId="@bowler.BowlerID">Edit</a></td>
-                <td><a asp-controller="Home" asp-action="Delete" asp-route-MovieId="@bowler.BowlerID">Delete</a></td>
+                <td><a asp-controller="Home" asp-action="Edit" asp-route-BowlerID="@bowler.BowlerID">Edit</a></td>
+                <td><a asp-controller="Home" asp-action="Delete" asp-route-BowlerID="@bowler.BowlerID">Delete</a></td>
             </tr>
 
         }

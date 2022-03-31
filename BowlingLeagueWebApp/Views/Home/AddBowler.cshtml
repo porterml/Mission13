@@ -1,6 +1,63 @@
 ﻿@{
 }
 
+@model BowlingLeagueWebApp.Models.Bowler;
 
 
 <h1>Add Bowlers page</h1>
+
+<div>
+    <form method="post">
+
+        <div asp-validation-summary="All"></div>
+
+
+
+
+        <label asp-for="BowlerFirstName">BowlerFirstName</label>
+        <input asp-for="BowlerFirstName" />
+        <br />
+
+        <label asp-for="BowlerMiddleInit">BowlerMiddleInit</label>
+        <input asp-for="BowlerMiddleInit" />
+        <br />
+
+        <label asp-for="BowlerLastName">BowlerLastName</label>
+        <input asp-for="BowlerLastName" />
+        <br />
+
+        <label asp-for="BowlerAddress">BowlerAddress</label>
+        <input asp-for="BowlerAddress" />
+        <br />
+
+        <label asp-for="BowlerCity">BowlerCity</label>
+        <input asp-for="BowlerCity" />
+        <br />
+
+        <label asp-for="BowlerState">BowlerState</label>
+        <input asp-for="BowlerState" />
+        <br />
+
+        <label asp-for="BowlerZip">BowlerZip</label>
+        <input asp-for="BowlerZip" />
+        <br />
+
+        <label asp-for="BowlerPhoneNumber">BowlerPhoneNumber</label>
+        <input asp-for="BowlerPhoneNumber" />
+        <br />
+
+        <label asp-for="Team">Team:</label>
+        <select asp-for="TeamID">
+            <option value="">Select a Team</option>
+            @foreach (Team t in ViewBag.teams)
+            {
+                <option value="@t.TeamID">@t.TeamName</option>
+            }
+
+        </select>
+        <br />
+
+        <button type="submit">Submit Bowler</button>
+
+    </form>
+</div>
